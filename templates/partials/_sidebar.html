@@ -1,0 +1,105 @@
+{% load static %}
+ <!-- ======= Sidebar ======= -->
+ <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'index' %}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#items-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-cart-plus"></i><span>Items</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="items-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'view-items' %}">
+              <i class="bi bi-circle"></i><span>View Items</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Items Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#store-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-shop"></i><span>Store</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="store-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'view-stores' %}">
+              <i class="bi bi-circle"></i><span>View Stores</span>
+            </a>
+          </li>
+        </ul>
+      </li><!--End Store Nav-->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#order-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-cash-coin"></i><span>Orders</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="order-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Add Order</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Manage Order</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Order Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#brand-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-clipboard-plus"></i><span>Brands</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="brand-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Add Brand</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Manage Brand</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Brand Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#attributes-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-list-nested"></i><span>Attributes</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="attributes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Add Attributes</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Manage Attributes</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Attributes Nav -->
+
+      <li class="nav-heading">Pages</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-person"></i>
+          <span>Reports</span>
+        </a>
+      </li><!-- End Report Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
