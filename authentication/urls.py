@@ -1,9 +1,7 @@
 from django.urls import path
-from django.views.decorators.csrf import csrf_exempt
-from .views import LoginView, LogoutView
-
+from . import views
 
 urlpatterns = [
-    path('', LoginView.as_view(), name='login'),
-    path('logout', LogoutView.as_view(), name='logout'),
+    path('', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]

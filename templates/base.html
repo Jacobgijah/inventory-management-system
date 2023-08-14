@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title> {% block title %} OIMS {% endblock title %} </title>
+  <title> {% block title %}  {% endblock title %} </title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -32,7 +32,6 @@
  </head>
 
 <body>
-
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -65,7 +64,7 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="{% static 'assets/img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">username</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"> Logged in: {{ user.username }}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -103,34 +102,27 @@
 
             <form action="{% url 'logout' %}" method="post">
               {% csrf_token %}
-            <li>
-                <input class="btn btn-primary w-100" type="submit" value="Sign out"
-              
-            </li>
+              <li>
+                <input class="btn btn-primary w-100" type="submit" value="Sign out">
+              </li>
           </form>
-
-          <!-- </ul>
-        </li>
-        
-
       </ul>
-    </nav> -->
+    </nav> 
+</header>
 
-  </header>
   {% include 'partials/_sidebar.html' %}
   <main id="main" class="main">
     
     <div class="pagetitle">
       {% include 'partials/_messages.html' %}
       <marquee behavior="scroll" direction="right">
-        <h4>ONLINE INVENTORY MANAGEMENT SYSTEM</h4>
+        <h4> WELCOME TO ONLINE INVENTORY MANAGEMENT SYSTEM</h4>
       </marquee>
     </div>
       {% block content %}
 
       
       {% endblock content %}
-
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
@@ -144,7 +136,7 @@
   </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
+  
   <!-- Vendor JS Files -->
   <script src="{% static 'assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
   <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -159,5 +151,4 @@
   <script src="{% static 'assets/js/main.js' %}"></script>
 
 </body>
-
 </html>

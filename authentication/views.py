@@ -1,28 +1,22 @@
 from django.shortcuts import render, redirect
-from django.views import View
-from django.contrib import messages, auth
-from django.contrib.auth.models import User
-# Create your views here.
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib import auth, messages
 
-class LoginView(View):
-    def get(self, request):
-        return render(request, 'authentication/login.html')
-
-    def post(self, request):
+def login_view(request):
+    if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-
-        if username and password:
-            user = auth.authenticate(username=username, password=password)
-
-            if user:
-                return redirect('index')
-
-        messages.error(request, 'Something went wrong! Try Again')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        messages.error(request, 'Invalid credentials! Try again')
         return render(request, 'authentication/login.html')
+    return render(request, 'authentication/login.html')
 
-class LogoutView(View):
-    def post(self, request):
-        auth.logout(request)
-        messages.success(request, 'You have been logged out.')
-        return redirect('login')
+@login_required(login_url='login')
+def logout_view(request):
+    auth.logout(request)
+    messages.success(request, 'You have been logged out')
+    return redirect('login')
