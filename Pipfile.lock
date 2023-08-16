@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "69bfc3e663f336f0b88107f4390583225b33469a83ce042392cd4d0d66365f0c"
+            "sha256": "59b571191c8ca7e85d32c175eced08e36bf8d10ee09637442b6ffa341fe30bf8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -31,6 +31,14 @@
             ],
             "index": "pypi",
             "version": "==4.2"
+        },
+        "install": {
+            "hashes": [
+                "sha256:0d3fadf4aa62c95efe8d34757c8507eb46177f86c016c21c6551eafc6a53d5a9",
+                "sha256:e67c8a0be5ccf8cb4ffa17d090f3a61b6e820e6a7e21cd1d2c0f7bc59b18e647"
+            ],
+            "index": "pypi",
+            "version": "==1.3.5"
         },
         "psycopg2-binary": {
             "hashes": [
