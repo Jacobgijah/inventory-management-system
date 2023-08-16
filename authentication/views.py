@@ -15,8 +15,12 @@ def login_view(request):
         return render(request, 'authentication/login.html')
     return render(request, 'authentication/login.html')
 
-@login_required(login_url='login')
+@login_required
 def logout_view(request):
     auth.logout(request)
     messages.success(request, 'You have been logged out')
     return redirect('login')
+
+@login_required
+def profile(request):
+    return render(request, 'authentication/profile.html')

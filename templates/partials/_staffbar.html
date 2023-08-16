@@ -1,34 +1,13 @@
-{% load static %}
-{% if user.is_authenticated and user.is_staff and user.is_superuser %}
- <!-- ======= Sidebar ======= -->
- <aside id="sidebar" class="sidebar">
+<aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="{% url 'index' %}">
+        <a class="nav-link " href="{% url 'staff-index' %}">
           <i class="bi bi-grid"></i>
-          <span>Chief ICT: Dashboard</span>
+          <span>Staff ICT: Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#attributes-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-list-nested"></i><span>Attribute</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="attributes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Add Attributes</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Manage Attributes</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Attributes Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#brand-nav" data-bs-toggle="collapse" href="#">
@@ -104,7 +83,3 @@
     </ul>
 
   </aside><!-- End Sidebar-->
-
-  {% else %}
-  {% include 'partials/_staffbar.html' %}
-  {% endif %}
