@@ -1,24 +1,27 @@
 from django.contrib import admin
-from .models import Category, Store, Item, Brand
+from .models import Brand, Attribute, Store, Item
 
 # Register your models here.
 admin.site.site_header ='OIMS - ADMIN'
 
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-class StoreAdmin(admin.ModelAdmin):
-    list_display = ('name', 'department', 'building')
-    list_filter = ['department']
-
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'description')
+    
+class AttributeAdmin(admin.ModelAdmin):
+    list_display = ('brand', 'model_name', 'generation', 'attribute_type', 'manufacture_year')
+    list_filter = ['brand']
+
+class StoreAdmin(admin.ModelAdmin):
+    list_display = ('name', 'building', 'room')
+    list_filter = ['building']
         
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'store', 'quantity', 'price')
-    list_filter = ['category']
+    list_display = ('name', 'brand', 'serial_no', 'imei', 'category', 'store', 'description',
+                    'quantity', 'warranty', 'registered_date', 'expiry_date', 'price')
+    list_filter = ['category', 'brand', 'store']
 
 
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Store, StoreAdmin)
 admin.site.register(Brand, BrandAdmin)
+admin.site.register(Attribute, AttributeAdmin)
+admin.site.register(Store, StoreAdmin)
 admin.site.register(Item, ItemAdmin)

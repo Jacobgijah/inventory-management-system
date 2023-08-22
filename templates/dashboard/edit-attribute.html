@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %} Edit attribute {% endblock title %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Attribute</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="breadcrumb-item active">Edit attribute</li>
+      </ol>
+    </nav>
+    
+  </div><!-- End Page Title -->
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Update attribute</h5>
+      <p>
+        Browser default validation with using the <code>required</code> keyword.
+      </p>
+
+      <!-- Browser Default Validation -->
+      <form action="{% url 'edit-attribute' attribute.id %}" method="POST" class="row g-3">
+        {% csrf_token %}
+        <div class="col-md-4">
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                name="attribute"
+                id="floatingName"
+                value="{{values.attribute_type}}"
+                placeholder="Name"
+                required
+              >
+              <label for="floatingName">Attribute type</label>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              name="model_name"
+              id="floatingName"
+              value="{{values.model_name}}"
+              placeholder="Model name"
+              required
+            >
+            <label for="floatingName">Model name</label>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-floating">
+          <input
+            type="number"
+            class="form-control"
+            name="generation"
+            id="floatingName"
+            value="{{values.generation}}"
+            placeholder="Generation"
+            required
+          >
+          <label for="floatingName">Generation</label>
+      </div>
+    </div>
+
+        <div class="col-md-4">
+          <div class="col-md-12">
+            <div class="form-floating">
+              <input
+                type="date"
+                name="manufactured_date"
+                class="form-control"
+                id="floatingCity"
+                value="{{values.manufacture_year}}"
+                placeholder="Manufactured"
+              >
+              <label for="floatingCity">Manufactured</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-floating mb-3">
+            <select class="form-select" name="brand" id="floatingSelect" aria-label="State">
+              {% for brand in brands %}
+                <option value="{{brand.name}}">
+                  {{brand.name}}
+                </option>
+              {% endfor %}
+            </select>
+            <label for="floatingSelect">Brand</label>
+          </div>
+        </div>
+        
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit">Save attribute</button>
+        </div>
+      </form>
+      <!-- End Browser Default Validation -->
+
+    </div>
+</div>
+
+{% endblock content %}

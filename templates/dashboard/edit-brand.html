@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %} Edit brand {% endblock title %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Brand</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="breadcrumb-item active">Edit brand</li>
+      </ol>
+    </nav>
+    
+  </div><!-- End Page Title -->
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Update brand</h5>
+      <p>
+        Browser default validation with using the <code>required</code> keyword.
+      </p>
+
+      <!-- Browser Default Validation -->
+      <form action="{% url 'edit-brand' brand.id %}" method="POST" class="row g-3">
+        {% csrf_token %}
+        <div class="col-md-12">
+
+          <div class="col-md-12 pb-4">
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                name="brand"
+                id="floatingName"
+                value="{{values.name}}"
+                placeholder="Name"
+                required
+              >
+              <label for="floatingName">Name</label>
+            </div>
+          </div>
+
+          <div class="col-12 pb-4">
+            <div class="form-floating">
+              <textarea
+                class="form-control"
+                name="description"
+                placeholder="Description"
+                id="floatingTextarea"
+                style="height: 100px;"
+                value="{{values.description}}"
+                required
+              ></textarea>
+              <label for="floatingTextarea">Description</label>
+            </div>
+          </div>
+            
+          <div class="col-2">
+            <button class="btn btn-primary" type="submit">Update</button>
+          </div>
+      </form>
+      <!-- End Browser Default Validation -->
+    </div>
+</div>
+
+{% endblock content %}

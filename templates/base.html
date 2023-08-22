@@ -44,13 +44,6 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
@@ -70,7 +63,7 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>{{user.first_name}} {{user.last_name}}</h6>
-              <span>Web Designer</span>
+              <span>{{user.profile.job}}</span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -112,12 +105,8 @@
 
   {% include 'partials/_sidebar.html' %}
   <main id="main" class="main">
-    
     <div class="pagetitle">
       {% include 'partials/_messages.html' %}
-      <marquee behavior="scroll" direction="right">
-        <h4> WELCOME TO ONLINE INVENTORY MANAGEMENT SYSTEM</h4>
-      </marquee>
     </div>
       {% block content %}
 

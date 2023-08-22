@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %} Manage brand {% endblock title %}
+{% block content %}
+<div class="pagetitle">
+  <h1>Brand</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+      <li class="breadcrumb-item active">Manage brand</li>
+    </ol>
+  </nav>
+  
+</div><!-- End Page Title -->
+
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Registered brands</h5>
+      
+      <div class="row my-1">
+        <div class="col-md-8"></div>
+        
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="text" class="form-control" id="searchField" placeholder="Search" />
+            </div>
+        </div>
+    </div> <!--end search bar-->
+
+      {% if brands.count %}
+      <!-- Table with stripped rows -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Activity</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for brand in page_obj %}
+          <tr>
+            <td>{{ brand.name }}</td>
+            <td>{{ brand.description }}</td>
+            <td>
+                <a href="{% url 'edit-brand' brand.id %}" class="btn btn-primary btn-sm"><i class="bi bi-pencil-fill"></i></a>
+                <a href="{% url 'delete-brand' brand.id %}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          {% endfor %}  
+        </tbody>
+      </table>
+      <!-- End Table with stripped rows -->
+      <div  class="">
+        Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+      </div>
+      <ul class="pagination align-right float-end mr-auto">
+        {% if page_obj.has_previous %}
+        <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; 1</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-rewind"></i></a></li>
+        {% endif %}
+        
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}"><i class="bi bi-fast-forward"></i></a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }} &raquo;</a></li>
+        {% endif %}
+
+    </ul>
+    {% endif %}
+    </div>
+  </div>
+    
+{% endblock content %}
