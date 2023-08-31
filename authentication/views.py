@@ -30,12 +30,26 @@ def profile(request):
     return render(request, 'authentication/profile.html')
 
 def profile_update(request):
-    profile = Profile.objects.get(pk=id)
+    profile = Profile.objects.get(staff=request.user)  # Assuming each profile is linked to a user
+    
+    if request.method == 'POST':
+        # Update profile data based on form submission
+        profile.company = request.POST.get('company')
+        profile.job = request.POST.get('job')
+        profile.country = request.POST.get('country')
+        profile.address = request.POST.get('address')
+        profile.phone = request.POST.get('phone')
+        profile.about = request.POST.get('about')
+        if request.FILES.get('profileImage'):
+            profile.image = request.FILES.get('profileImage')
+        profile.save()
+        
+        messages.success(request, f'Profile data for {profile.staff.username} has been updated successfully')
+        return redirect('profile') 
+
     context = {
         'profile': profile,
-        'values': profile
+        'values': profile,
     }
-    if request.method == 'POST':
-        
-        
-        return render(request, 'authentication/profile.html', context)
+    
+    return render(request, 'authentication/profile.html', context)

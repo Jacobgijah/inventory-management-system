@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %} Delete order {% endblock title %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Order</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'order-manage' %}">Manage order</a></li>
+        <li class="breadcrumb-item active">Delete order</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Delete Order</h5>
+            <p>Are you sure you want to delete?</p>
+
+            <form method="POST" action="" class="row g-3">
+                {% csrf_token %}
+                <div class="text-start">
+                  <button type="submit" class="btn btn-danger">Submit</button>
+                  <a href="{% url 'order-manage' %}" ><div class="btn btn-primary">Cancel</div></a>
+                </div>
+                
+            </form><!-- End Delete Form -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

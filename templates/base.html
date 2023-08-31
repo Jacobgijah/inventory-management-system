@@ -29,6 +29,9 @@
   <!-- Template Main CSS File -->
   <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
+    <!--JavaScript and CSRF Token-->
+    <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+
  </head>
 
 <body>
@@ -80,12 +83,6 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
               <hr class="dropdown-divider">
             </li>
 
@@ -110,7 +107,16 @@
     </div>
       {% block content %}
 
-      
+      <script>
+        $(document).ready(function() {
+            // CSRF token for AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                }
+            });
+        });
+    </script>
       {% endblock content %}
   </main><!-- End #main -->
 
@@ -138,6 +144,9 @@
 
   <!-- Template Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
+
+
+
 
 </body>
 </html>

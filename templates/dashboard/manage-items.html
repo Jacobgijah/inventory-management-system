@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block title %} Manage brand {% endblock title %}
+{% block title %} Manage item {% endblock title %}
 {% block content %}
 <div class="pagetitle">
-  <h1>Brand</h1>
+  <h1>Item</h1>
   <nav>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item active">Manage brand</li>
+      <li class="breadcrumb-item active">Manage item</li>
     </ol>
   </nav>
   
@@ -13,7 +13,7 @@
 
 <div class="card">
     <div class="card-body">
-      <h5 class="card-title">Registered brands</h5>
+      <h5 class="card-title">Registered items</h5>
       
       <div class="row my-1">
         <div class="col-md-8"></div>
@@ -30,23 +30,35 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Description</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Serial</th>
+            <th scope="col">Category</th>
+            <th scope="col">Store</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Warranty</th>
+            <th scope="col">Price (Tshs)</th>
             <th scope="col">Activity</th>
           </tr>
         </thead>
         <tbody>
-            {% for brand in page_obj %}
+            {% for item in items %}
+            {% if item.created_by == user %}
           <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ brand.name }}</td>
-            <td>{{ brand.description }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.brand }}</td>
+            <td>{{ item.serial_no }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.store }}</td>
+            <td><a href="{% url 'detail-items' item.id %}" class="text-primary">{{ item.quantity }}</a></td>
+            <td>{{ item.warranty }}</td>
+            <td>{{ item.price }}</td>
             <td>
-                <a href="{% url 'edit-brand' brand.id %}" class="btn btn-primary btn-sm"><i class="bi bi-pencil-fill"></i></a>
-                <a href="{% url 'delete-brand' brand.id %}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
+                <a href="{% url 'edit-items' item.id %}" class="btn btn-primary btn-sm"><i class="bi bi-pencil-fill"></i></a>
+                <a href="{% url 'delete-items' item.id %}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
             </td>
           </tr>
+          {% endif %}
           {% endfor %}  
         </tbody>
       </table>

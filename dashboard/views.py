@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Item, Store, Brand, Attribute
+from order.models import Order
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -10,6 +11,9 @@ def index(request):
     total_brands = Brand.objects.count()
     total_items = Item.objects.count()
     total_users = User.objects.count()
+    total_orders = Order.objects.count()
+    
+    orders = Order.objects.all()
     
     # calculate the percentage increase or decrease in the 
     # total number of brands, items users compared to a previous value
@@ -27,6 +31,8 @@ def index(request):
         "total_brands": total_brands,
         "total_items": total_items,
         "total_users": total_users,
+        "total_orders": total_orders,
+        "orders": orders,
         "brand_percentage_change": brand_percentage_change,
         "item_percentage_change": item_percentage_change,
         "user_percentage_change": user_percentage_change,
@@ -35,7 +41,15 @@ def index(request):
 
 @login_required
 def staff_index(request):
-    return render(request, 'dashboard/staff-index.html')
+    total_brands = Brand.objects.count()
+    total_items = Item.objects.count()
+    
+    context = {
+        "total_brands": total_brands,
+        "total_items": total_items,
+    }
+    
+    return render(request, 'dashboard/staff-index.html', context)
 
 @login_required
 def view_items(request):
@@ -77,19 +91,21 @@ def add_brand(request):
         existing_brand = Brand.objects.filter(name=brand).exists()
         
         if existing_brand:
-            messages.error(request, "A brand with the same details already exists.")
+            messages.error(request, f'{brand} brand with the same details already exists.')
             return render(request, "dashboard/add-brand.html", context)
         
         Brand.objects.create(name=brand, description=description)
-        messages.success(request, "Brand submitted successfully")
+        messages.success(request, f'{brand} brand submitted successfully.')
         return redirect("add-brand")
 
 @login_required
 def delete_brand(request, id):
     brand = Brand.objects.get(pk=id)
-    brand.delete()
-    messages.success(request, "Brand removed successfully")
-    return redirect('add-brand')
+    if request.method == 'POST':
+        brand.delete()
+        messages.success(request, f"{brand} brand removed successfully")
+        return redirect('add-brand')
+    return render(request, 'dashboard/delete-brand.html')
 
 @login_required
 def edit_brand(request, id):
@@ -109,7 +125,7 @@ def edit_brand(request, id):
         brand.name = new_brand_name  # Assign new_brand_name to brand.name
         brand.description = new_description # Assign new_description to brand.description
         brand.save()
-        messages.success(request, "Brand updated successfully")
+        messages.success(request, f"{new_brand_name} brand updated successfully")
         return redirect("manage-brand")  # Pass id to the URL
 
 @login_required
@@ -147,7 +163,6 @@ def add_attribute(request):
         model_name = request.POST['model_name']
         generation = request.POST['generation']
         manufactured_date = request.POST['manufactured_date']
-        brand_name = request.POST['brand']
 
         # Check for data redundancy before creating the attribute entry
         existing_attribute = Attribute.objects.filter(
@@ -156,20 +171,17 @@ def add_attribute(request):
                         ).exists()
 
         if existing_attribute:
-            messages.error(request, "An attribute with the same details already exists.")
+            messages.error(request, f"{model_name} attribute with the same details already exists.")
             return render(request, "dashboard/add-attribute.html", context)
         
-        # Retrieve the Brand instance using the brand name
-        brand_instance = Brand.objects.get(name=brand_name)
 
         new_attribute = Attribute.objects.create(
             attribute_type=attribute_name,
             model_name=model_name,
             generation=generation,
             manufacture_year=manufactured_date,
-            brand=brand_instance
         )
-        messages.success(request, "Attribute submitted successfully")
+        messages.success(request, f"{model_name} attribute submitted successfully")
         return redirect("add-attribute")
 
 @login_required
@@ -190,27 +202,24 @@ def edit_attribute(request, id):
         new_model_name = request.POST['model_name']
         new_generation = request.POST['generation']
         new_manufactured_date = request.POST['manufactured_date']
-        new_brand_name = request.POST['brand']
-        
-        # Retrieve the Brand instance using the new_brand_instance
-        new_brand_instance = Brand.objects.get(name=new_brand_name)
         
         attribute.attribute_type = new_attribute_name
         attribute.model_name = new_model_name
         attribute.generation = new_generation
         attribute.manufacture_year = new_manufactured_date
-        attribute.brand = new_brand_instance
         attribute.save()
-        messages.success(request, "Attribute updated successfully")
+        messages.success(request, f"{new_model_name} attribute updated successfully")
         return redirect("manage-attribute") 
     
 
 @login_required
 def delete_attribute(request, id):
     attribute = Attribute.objects.get(pk=id)
-    attribute.delete()
-    messages.success(request, "Attribute removed successfully")
-    return redirect('manage-attribute')
+    if request.method == 'POST':
+        attribute.delete()
+        messages.success(request, f" The ``{attribute}`` attribute removed successfully")
+        return redirect('manage-attribute')
+    return render(request, 'dashboard/delete-attribute.html')
 
 @login_required
 def manage_attribute(request):
@@ -225,3 +234,174 @@ def manage_attribute(request):
 
     if request.method == 'GET':    
         return render(request, 'dashboard/manage-attribute.html', context)
+    
+@login_required
+def add_items(request):
+    items = Item.objects.all()
+    brands = Brand.objects.all()
+    stores = Store.objects.all()
+    models = Attribute.objects.all()
+    paginator = Paginator(items, 5)
+    page_no = request.GET.get("page")
+    page_obj = Paginator.get_page(paginator, page_no)
+    context = {
+        "items": items,
+        "brands": brands,
+        "stores": stores,
+        "models": models,
+        "categories": Item.CATEGORY,  
+        "page_obj": page_obj,
+    }
+    
+    if request.method == 'GET':    
+        return render(request, 'dashboard/add-items.html', context)
+    
+    if request.method == 'POST':
+        name = request.POST['name']
+        brand_name = request.POST['brand']  # Retrieve brand name from POST data
+        model_name = request.POST['model_name']
+        category = request.POST.get("category")
+        store_name = request.POST['store']  # Retrieve store name from POST data
+        serial_no = request.POST['serial_no']
+        imei = request.POST['imei']
+        quantity = request.POST['quantity']
+        price = request.POST['price']
+        warranty = request.POST['warranty']
+        remarks = request.POST['remarks']
+        description = request.POST['description']
+
+    # Check for data redundancy before creating the attribute entry
+    existing_item = Item.objects.filter(
+                        name=name, category=category,
+                        serial_no=serial_no, imei=imei,
+                    ).exists()
+
+    if existing_item:
+        messages.error(request, f"The item `{name}` with the same details already exists.")
+        return render(request, "dashboard/add-items.html", context)
+    
+    # Retrieve the Brand, Attribute & Store instances using the brand_name, model_name and store_name
+    brand_instance = Brand.objects.get(name=brand_name)
+    store_instance = Store.objects.get(name=store_name)
+    model_instance = Attribute.objects.get(model_name=model_name)
+
+    new_item = Item.objects.create(
+        created_by=request.user,
+        name=name, brand=brand_instance, model_name=model_instance, category=category, store=store_instance, serial_no=serial_no,
+        imei=imei, quantity=quantity, price=price, warranty=warranty, remarks=remarks,
+        description=description
+    )
+    messages.success(request, f"The `{name}` item submitted successfully")
+    return redirect("add-items")
+
+def manage_items(request):
+    items = Item.objects.all()
+    brands = Brand.objects.all()
+    stores = Store.objects.all()
+    models = Attribute.objects.all()
+    paginator = Paginator(items, 5)
+    page_no = request.GET.get("page")
+    page_obj = Paginator.get_page(paginator, page_no)
+    context = {
+        "items": items,
+        "brands": brands,
+        "stores": stores,
+        "models": models,
+        "categories": Item.CATEGORY,  
+        "page_obj": page_obj,
+    }
+    
+    if request.method == 'GET':    
+        return render(request, 'dashboard/manage-items.html', context)
+
+def delete_items(request, id):
+    item = Item.objects.get(pk=id)
+    if request.method == 'POST':
+        item.delete()
+        messages.success(request, f"The ``{item}`` item removed successfully")
+        return redirect('manage-items')
+    return render(request, 'dashboard/delete-items.html')
+    
+def edit_items(request, id):
+    item = Item.objects.get(pk=id)
+    brands = Brand.objects.all()
+    models = Attribute.objects.all()
+    stores = Store.objects.all()
+    context = {
+        'item': item,
+        'brands': brands,
+        'models': models,
+        'stores': stores,
+        'categories': Item.CATEGORY,
+        'values': item,
+    }
+    
+    if request.method == 'GET':    
+        return render(request, 'dashboard/edit-items.html', context)
+    
+    if request.method == 'POST':
+        new_name = request.POST['name']
+        new_brand_name = request.POST['brand']  # Retrieve brand name from POST data
+        new_model_name = request.POST['model_name']
+        new_category = request.POST.get("category")
+        new_store_name = request.POST['store']  # Retrieve store name from POST data
+        new_serial_no = request.POST['serial_no']
+        new_imei = request.POST['imei']
+        new_quantity = request.POST['quantity']
+        new_price = request.POST['price']
+        new_warranty = request.POST['warranty']
+        new_remarks = request.POST['remarks']
+        new_description = request.POST['description']
+        
+        # Retrieve the Brand, Attribute & Store instances using the brand_name, model_name and store_name
+        new_brand_instance = Brand.objects.get(name=new_brand_name)
+        new_store_instance = Store.objects.get(name=new_store_name)
+        new_model_instance = Attribute.objects.get(model_name=new_model_name)
+
+        item.name = new_name
+        item.brand = new_brand_instance
+        item.model_name = new_model_instance
+        item.serial_no = new_serial_no
+        item.imei = new_imei
+        item.category = new_category
+        item.store = new_store_instance
+        item.description = new_description
+        item.quantity = new_quantity
+        item.warranty = new_warranty
+        item.price = new_price
+        item.remarks = new_remarks
+        item.save()
+        messages.success(request, f"The {new_name} item updated successfully")
+        return redirect("manage-items")
+
+def detail_items(request, id):
+    item = Item.objects.get(pk=id)
+    stores = Store.objects.all()
+    context = {
+        'item': item,
+        'stores': stores,
+        'values': item,
+    }
+    
+    if request.method == 'GET':    
+        return render(request, 'dashboard/detail-items.html', context)
+
+def receive_items(request, id):
+    item = Item.objects.get(pk=id)
+    context = {
+        'item': item,
+    }
+    
+    if request.method == 'GET':    
+        return render(request, 'dashboard/receive-items.html', context)
+
+    if request.method == 'POST':
+        receive_quantity = request.POST['quantity']
+        
+        instance_quantity = Item.objects.get(receive_quantity=receive_quantity)
+        
+        item.receive_quantity = instance_quantity
+        item.quantity += item.receive_quantity
+        item.save()
+        messages.success(request, f"{instance_quantity} added successfully")
+        return redirect("/detail-items/"+str(item.id))

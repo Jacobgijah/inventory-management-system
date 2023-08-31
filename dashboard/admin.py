@@ -8,17 +8,17 @@ class BrandAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
     
 class AttributeAdmin(admin.ModelAdmin):
-    list_display = ('brand', 'model_name', 'generation', 'attribute_type', 'manufacture_year')
-    list_filter = ['brand']
+    list_display = ('model_name', 'generation', 'attribute_type', 'manufacture_year')
+    list_filter = ['attribute_type']
 
 class StoreAdmin(admin.ModelAdmin):
     list_display = ('name', 'building', 'room')
     list_filter = ['building']
         
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'serial_no', 'imei', 'category', 'store', 'description',
-                    'quantity', 'warranty', 'registered_date', 'expiry_date', 'price')
-    list_filter = ['category', 'brand', 'store']
+    list_display = ('name', 'brand', 'model_name', 'serial_no', 'imei', 'category', 'store', 'description',
+                    'quantity', 'warranty', 'registered_date', 'last_updated', 'price')
+    list_filter = ['category', 'brand', 'store', 'model_name']
 
 
 admin.site.register(Brand, BrandAdmin)

@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% block title %} Edit item {% endblock title %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Item</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'manage-items' %}">Manage item</a></li>
+        <li class="breadcrumb-item active">Edit Item</li>
+      </ol>
+    </nav>
+    
+  </div><!-- End Page Title -->
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Update item</h5>
+      <p>
+        Browser default validation with using the <code>required</code> keyword.
+      </p>
+
+      <!-- Browser Default Validation -->
+      <form action="" method="POST" class="row g-3">
+        {% csrf_token %}
+        <div class="col-md-4">
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                name="name"
+                id="floatingName"
+                value="{{values.name}}"
+                placeholder="Name"
+                required
+              >
+              <label for="floatingName">Name</label>
+          </div>
+        </div> <!--END NAME FIELD-->
+
+        <div class="col-md-4">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              name="serial_no"
+              id="floatingName"
+              value="{{values.serial_no}}"
+              placeholder="Serial No"
+              required
+            >
+            <label for="floatingName">Serial No</label>
+        </div>
+      </div> <!--END SERIAL FIELD-->
+
+      <div class="col-md-4">
+        <div class="form-floating">
+          <input
+            type="number"
+            class="form-control"
+            name="imei"
+            id="floatingName"
+            value="{{values.imei}}"
+            placeholder="IMEI"
+            required
+          >
+          <label for="floatingName">IMEI</label>
+      </div>
+    </div> <!--END IMEI FIELD-->
+
+        <div class="col-md-4">
+            <div class="form-floating mb-3">
+              <select class="form-select" name="brand" id="floatingSelect" aria-label="State">
+                {% for brand in brands %}
+                  <option value="{{brand.name}}">
+                    {{brand.name}}
+                  </option>
+                {% endfor %}
+              </select>
+              <label for="floatingSelect">Brand</label>
+            </div>
+          </div> <!--END BRAND FIELD-->
+
+          <div class="col-md-4">
+            <div class="form-floating mb-3">
+              <select class="form-select" name="model_name" id="floatingSelect" aria-label="State">
+                {% for model in models %}
+                  <option value="{{model.model_name}}">
+                    {{model.model_name}}
+                  </option>
+                {% endfor %}
+              </select>
+              <label for="floatingSelect">Model</label>
+            </div>
+          </div> <!--END MODEL FIELD-->
+
+          <div class="col-md-4">
+            <div class="form-floating mb-3">
+                <select class="form-select" name="category" id="floatingSelect" aria-label="State">
+                    {% for value, label in categories %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <label for="floatingSelect">Category</label>
+            </div>
+        </div> <!--END CATEGORY FIELD-->   
+    
+          <div class="col-md-4">
+            <div class="form-floating mb-3">
+              <select class="form-select" name="store" id="floatingSelect" aria-label="State">
+                {% for store in stores %}
+                  <option value="{{store.name}}">
+                    {{store.name}}
+                  </option>
+                {% endfor %}
+              </select>
+              <label for="floatingSelect">Store</label>
+            </div>
+          </div> <!--END STORE FIELD-->       
+
+      <div class="col-md-4">
+        <div class="form-floating">
+          <input
+            type="number"
+            class="form-control"
+            name="quantity"
+            id="floatingName"
+            value="{{values.quantity}}"
+            placeholder="quantity"
+            required
+          >
+          <label for="floatingName">Quantity</label>
+      </div>
+    </div> <!--END QUANTITY FIELD-->
+
+        <div class="col-md-4">
+          <div class="col-md-12">
+            <div class="form-floating">
+              <input
+                type="date"
+                name="warranty"
+                class="form-control"
+                id="floatingCity"
+                value="{{values.warranty}}"
+                placeholder="warranty"
+              >
+              <label for="floatingCity">Warranty</label>
+            </div>
+          </div>
+        </div><!--END WARRANTY FIELD-->
+   
+
+          <div class="col-md-4">
+            <div class="col-md-12">
+              <div class="form-floating">
+                <input
+                  type="number"
+                  name="price"
+                  class="form-control"
+                  id="floatingCity"
+                  value="{{values.price}}"
+                  placeholder="price"
+                >
+                <label for="floatingCity">Price</label>
+              </div>
+            </div>
+          </div><!--END PRICE FIELD-->
+
+          <div class="col-lg-4 ">
+            <div class="form-floating">
+              <textarea
+                class="form-control"
+                name="description"
+                placeholder="Description"
+                id="floatingTextarea"
+                value="{{values.description}}"
+                required
+              ></textarea>
+              <label for="floatingTextarea">Description</label>
+            </div>
+          </div><!--END DESCRIPTION FIELD-->
+
+          <div class="col-md-4">
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                name="remarks"
+                id="floatingName"
+                value="{{values.remarks}}"
+                placeholder="remarks"
+                required
+              >
+              <label for="floatingName">Remarks</label>
+          </div>
+        </div><!--END REMARKS FIELD-->        
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit">Update item</button>
+        </div>
+      </form>
+      <!-- End Browser Default Validation -->
+
+    </div>
+</div>
+
+{% endblock content %}

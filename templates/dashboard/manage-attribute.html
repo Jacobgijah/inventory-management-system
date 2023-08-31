@@ -5,7 +5,6 @@
   <h1>Attribute</h1>
   <nav>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
       <li class="breadcrumb-item active">Manage attribute</li>
     </ol>
   </nav>
@@ -31,7 +30,7 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="col">Brand</th>
+                <th scope="col">#</th>
                 <th scope="col">Model Name</th>
                 <th scope="col">Generation</th>
                 <th scope="col">Type</th>
@@ -42,7 +41,7 @@
             <tbody>
                 {% for attribute in page_obj %}
                 <tr>
-                    <td>{{ attribute.brand }}</td>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ attribute.model_name }}</td>
                     <td>{{ attribute.generation }}</td>
                     <td>{{ attribute.attribute_type }}</td>

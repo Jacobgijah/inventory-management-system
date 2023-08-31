@@ -1,11 +1,6 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
-CATEGORY = (
-    ('hardware', 'hardware'),
-    ('software', 'software'),
-)
-
 class Brand(models.Model):
     name = models.CharField(max_length=20, null=True)
     description = models.TextField(null=True)
@@ -16,7 +11,6 @@ class Brand(models.Model):
         return self.name   
 
 class Attribute(models.Model):
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True)
     model_name = models.CharField(max_length=20, null=True)
     generation = models.PositiveBigIntegerField(null=True)
     attribute_type = models.CharField(max_length=20, null=True)
@@ -25,7 +19,7 @@ class Attribute(models.Model):
         verbose_name_plural = 'Attribute'
 
     def __str__(self):
-        return f'{self.brand}-{self.model_name}' 
+        return f'{self.model_name}-{self.generation}' 
 
 class Store(models.Model):
     name = models.CharField(max_length=50, null=True)
@@ -36,18 +30,30 @@ class Store(models.Model):
         return self.name
 
 class Item(models.Model):
+    CATEGORY = (
+        ('hardware', 'Hardware'),
+        ('software', 'Software'),
+        ('other', 'Other'),
+    )
+
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=50, null=True)
-    brand = models.ForeignKey(Attribute, on_delete=models.CASCADE, null=True)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True)
+    model_name = models.ForeignKey(Attribute, on_delete=models.CASCADE, null=True)
     serial_no = models.CharField(max_length=11, null=True)
     imei = models.PositiveIntegerField(null=True)
     category = models.CharField(max_length=10, choices=CATEGORY, null=True)
     store = models.ForeignKey(Store, on_delete=models.CASCADE, null=True)
     description = models.TextField(null=True)
     quantity = models.PositiveIntegerField(null=True)
+    receive_quantity = models.PositiveIntegerField(default='0', null=True, blank=True)
     warranty = models.DateField(null=True)
-    registered_date = models.DateField(auto_now=True,null=True)
-    expiry_date = models.DateField(null=True) # optional field
+    registered_date = models.DateTimeField(auto_now_add=True, auto_now=False)
+    last_updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     price = models.FloatField(null=True)
-      
+    remarks = models.CharField(max_length=50, null=True)
+    class Meta:
+        ordering = ['-registered_date']
+    
     def __str__(self):
-        return self.name
+        return f'{self.name}: {self.brand.name}-{self.model_name.model_name}'

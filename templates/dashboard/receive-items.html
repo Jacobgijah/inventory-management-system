@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %} Receive items {% endblock title %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Item</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'manage-items' %}">Manage item</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'detail-items' item.id %}">Item details</a></li>
+      <li class="breadcrumb-item active">Receive item</li>
+      </ol>
+    </nav>
+    
+  </div><!-- End Page Title -->
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Receive: {{item.name}}</h5>
+      <p>
+        Browser default validation with using the <code>required</code> keyword.
+      </p>
+
+      <!-- Browser Default Validation -->
+      <form action="" method="POST" class="row g-3">
+        {% csrf_token %}
+
+        <div class="col-md-12">
+            <div class="form-floating">
+            <input
+                type="number"
+                class="form-control"
+                name="quantity"
+                id="floatingName"
+                placeholder="quantity"
+                required
+            >
+            <label for="floatingName">Quantity</label>
+        </div>
+        </div> <!--END QUANTITY FIELD-->
+
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+      </form>
+      <!-- End Browser Default Validation -->
+
+    </div>
+</div>
+{% endblock content %}

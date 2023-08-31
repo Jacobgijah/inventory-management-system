@@ -6,7 +6,6 @@
     <h1>Registered Items</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
         <li class="breadcrumb-item active">Items</li>
       </ol>
     </nav>
@@ -26,28 +25,31 @@
             <table class="table datatable">
               <thead>
                 <tr>
+                  <th scope="col">#</th>
                   <th scope="col">Name</th>
                   <th scope="col">Brand</th>
-                  <th scope="col">Serial</th>
                   <th scope="col">Category</th>
                   <th scope="col">Store</th>
                   <th scope="col">Quantity</th>
-                  <th scope="col">Warranty</th>
-                  <th scope="col">Price (Tshs)</th>
-                  {% comment %} <th scope="col">Activity</th> {% endcomment %}
+                  <th scope="col">Price(Tshs)</th>
+                  <th scope="col">Remarks</th>
+                  <th scope="col">Timestamp</th>
+                  <th scope="col">Last Updated</th>
                 </tr>
               </thead>
               <tbody>
                 {% for item in items %}
                 <tr>
+                  <td>{{ forloop.counter }}</td>
                   <td>{{ item.name }}</td>
                   <td>{{ item.brand }}</td>
-                  <td>{{ item.serial_no }}</td>
                   <td>{{ item.category }}</td>
                   <td>{{ item.store }}</td>
                   <td>{{ item.quantity }}</td>
-                  <td>{{ item.warranty }}</td>
                   <td>{{ item.price }}</td>
+                  <td>{{ item.remarks }}</td>
+                  <td>{{ item.registered_date }}</td>
+                  <td>{{ item.last_updated }}</td>
                   {% comment %} <td>
                     <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-fill"></i></a>
                         <a href="#" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>

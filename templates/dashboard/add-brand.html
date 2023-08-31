@@ -5,8 +5,7 @@
     <h1>Brand</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-        <li class="breadcrumb-item active">Brand</li>
+        <li class="breadcrumb-item active">Add brand</li>
       </ol>
     </nav>
     
@@ -70,6 +69,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
+          <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
           <th scope="col">Activity</th>
@@ -78,6 +78,7 @@
       <tbody>
           {% for brand in page_obj %}
         <tr>
+          <td>{{ forloop.counter }}</td>
           <td>{{ brand.name }}</td>
           <td>{{ brand.description }}</td>
           <td>

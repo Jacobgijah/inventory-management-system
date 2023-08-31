@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %} Item details {% endblock title %}
+{% block content %}
+<div class="pagetitle">
+  <h1>Item</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'manage-items' %}">Manage item</a></li>
+      <li class="breadcrumb-item active">Item details</li>
+    </ol>
+  </nav>
+  
+</div><!-- End Page Title -->
+
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Item: {{item.name}}</h5>
+      
+      <div class="row my-1">
+        <div class="col-md-12"></div>
+            <div class="col-md-3">
+                <a href="{% url 'receive-items' item.id %}" class="btn btn-primary"><!--<i class="bi bi-pencil-fill">-->Receive this item</i></a>
+            </div>
+        </div> <!--end Receive button-->
+
+      <!-- Table with stripped rows -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Store</th>
+            <th scope="col">Last Updated</th>
+            <th scope="col">Reorder Level</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.store }}</td>
+            <td>{{ item.last_updated }}</td>
+            <td>none</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- End Table with stripped rows -->
+      <div  class="">
+        Showing page 1 of 1
+      </div>
+    </div>
+  </div>
+    
+{% endblock content %}
