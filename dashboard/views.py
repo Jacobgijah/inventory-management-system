@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Item, Store, Brand, Attribute
 from order.models import Order
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db.models import Count
 
 @login_required
 def index(request):
@@ -54,16 +55,18 @@ def staff_index(request):
 @login_required
 def view_items(request):
     items = Item.objects.all() # using ORM
-    
+    paginator = Paginator(items, 5)
+    page_no = request.GET.get("page")
+    page_obj = Paginator.get_page(paginator, page_no)
     context = {
         'items': items,
+        "page_obj": page_obj,
     }
     return render(request, 'dashboard/view-items.html', context)
 
 @login_required
 def view_stores(request):
-    stores = Store.objects.all()
-    
+    stores = Store.objects.annotate(item_count=Count('item')) 
     context = {
         'stores': stores,
     }
@@ -294,6 +297,7 @@ def add_items(request):
     messages.success(request, f"The `{name}` item submitted successfully")
     return redirect("add-items")
 
+@login_required
 def manage_items(request):
     items = Item.objects.all()
     brands = Brand.objects.all()
@@ -314,6 +318,7 @@ def manage_items(request):
     if request.method == 'GET':    
         return render(request, 'dashboard/manage-items.html', context)
 
+@login_required
 def delete_items(request, id):
     item = Item.objects.get(pk=id)
     if request.method == 'POST':
@@ -321,7 +326,8 @@ def delete_items(request, id):
         messages.success(request, f"The ``{item}`` item removed successfully")
         return redirect('manage-items')
     return render(request, 'dashboard/delete-items.html')
-    
+ 
+@login_required   
 def edit_items(request, id):
     item = Item.objects.get(pk=id)
     brands = Brand.objects.all()
@@ -374,6 +380,7 @@ def edit_items(request, id):
         messages.success(request, f"The {new_name} item updated successfully")
         return redirect("manage-items")
 
+@login_required
 def detail_items(request, id):
     item = Item.objects.get(pk=id)
     stores = Store.objects.all()
@@ -386,8 +393,9 @@ def detail_items(request, id):
     if request.method == 'GET':    
         return render(request, 'dashboard/detail-items.html', context)
 
+@login_required
 def receive_items(request, id):
-    item = Item.objects.get(pk=id)
+    item = get_object_or_404(Item, pk=id)
     context = {
         'item': item,
     }
@@ -398,10 +406,11 @@ def receive_items(request, id):
     if request.method == 'POST':
         receive_quantity = request.POST['quantity']
         
-        instance_quantity = Item.objects.get(receive_quantity=receive_quantity)
+        instance_quantity = int(receive_quantity)
         
         item.receive_quantity = instance_quantity
         item.quantity += item.receive_quantity
         item.save()
-        messages.success(request, f"{instance_quantity} added successfully")
-        return redirect("/detail-items/"+str(item.id))
+        messages.success(request, f"Successfully added: {instance_quantity} quantity of item {item.name}.")
+        return redirect("detail-items", id=item.id)
+

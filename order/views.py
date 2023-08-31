@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+
 # Create your views here.
+
 @login_required
 def add_order(request):
     orders = Order.objects.all()
@@ -23,11 +25,11 @@ def add_order(request):
         return render(request, 'order/order-add.html', context)
     
     if request.method == 'POST':
-        item = request.POST['item']
+        item_id = request.POST['item']  # Use the item ID instead of the name
         quantity = request.POST['quantity']
         
-        # Retrieve the Item instance using the item name
-        item_instance = Item.objects.get(name=item)
+        # Retrieve the Item instance using the item ID
+        item_instance = Item.objects.get(pk=item_id)
         
         Order.objects.create(created_by=request.user, item=item_instance, quantity=quantity)
         messages.success(request, f'{item_instance} order request submitted successfully.')
@@ -112,4 +114,15 @@ def update_order_status(request):
             return JsonResponse({"success": False, "error": "Order not found"})
     else:
         return JsonResponse({"success": False, "error": "Invalid request method"})
+
+@login_required
+def detail_order(request, id):
+    order = Order.objects.get(pk=id)
+    context = {
+        'order': order,
+        
+    }
+    
+    if request.method == 'GET':    
+        return render(request, 'order/order-detail.html', context)
        

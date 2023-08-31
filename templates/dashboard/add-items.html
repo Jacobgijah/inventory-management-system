@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'staff_base.html' %}
 {% block title %} Add items {% endblock title %}
 {% block content %}
 <div class="pagetitle">
@@ -223,7 +223,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for item in items %}
+          {% for item in page_obj %}
           {% if item.created_by == user %}
           <tr>
             <td>{{ item.name }}</td>
@@ -260,7 +260,5 @@
 
   </ul>
   {% endif %}
-  </div>
-</div>
 
 {% endblock content %}

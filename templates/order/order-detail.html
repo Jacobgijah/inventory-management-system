@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %} Order details {% endblock title %}
+{% block content %}
+<div class="pagetitle">
+  <h1>Order</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'order-request' %}">Order requests </a></li>
+      <li class="breadcrumb-item active">Order details</li>
+    </ol>
+  </nav>
+  
+</div><!-- End Page Title -->
+
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Item: {{order.item.name}}</h5>
+
+      <!-- Table with stripped rows -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Created by</th>
+            <th scope="col">Issued date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Activity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ order.item.name }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.created_by }}</td>
+            <td>{{ order.issued_date }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+                <button class="btn btn-success btn-sm approve-btn" data-order-id="{{ order.id }}"><i class="bi bi-check-circle"></i></button>
+                <button class="btn btn-warning btn-sm decline-btn" data-order-id="{{ order.id }}"><i class="bi bi-x-circle"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- End Table with stripped rows -->
+      <div  class="">
+        Showing page 1 of 1
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function() {
+      // Function to get the CSRF token
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+  
+      // AJAX request handling for "Approve" and "Decline" buttons
+      $(".approve-btn").on("click", function() {
+        const orderId = $(this).data("order-id");
+        updateOrderStatus(orderId, "Approved");
+      });
+  
+      $(".decline-btn").on("click", function() {
+        const orderId = $(this).data("order-id");
+        updateOrderStatus(orderId, "Declined");
+      });
+  
+      function updateOrderStatus(orderId, status) {
+        const csrfToken = getCookie('csrftoken'); // Get the CSRF token
+        $.ajax({
+          type: "POST",
+          url: "{% url 'update-order-status' %}",
+          data: {
+            order_id: orderId,
+            new_status: status
+          },
+          beforeSend: function(xhr) {
+            // Set the CSRF token in the request headers
+            xhr.setRequestHeader("X-CSRFToken", csrfToken);
+          },
+          success: function(response) {
+            if (response.success) {
+              window.location.reload();
+            } else {
+              console.error("Error updating order status:", response.error);
+            }
+          },
+          error: function(xhr) {
+            console.error("AJAX request error:", xhr.responseText);
+          }
+        });
+      }
+    });
+  </script>
+    
+{% endblock content %}

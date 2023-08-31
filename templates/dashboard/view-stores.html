@@ -30,6 +30,7 @@
                   <th scope="col">Name</th>
                   <th scope="col">Building</th>
                   <th scope="col">Room</th>
+                  <th scope="col">Items</th>
                 </tr>
               </thead>
               <tbody>
@@ -39,10 +40,7 @@
                   <td>{{ store.name }}</td>
                   <td>{{ store.building }}</td>
                   <td>{{ store.room }}</td>
-                  {% comment %} <td>
-                    <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-fill"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
-                  </td> {% endcomment %}
+                  <td>{{ store.item_count }}</td>
                 </tr>
                 {% endfor %}                  
               </tbody>

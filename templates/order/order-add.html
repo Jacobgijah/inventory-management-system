@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'staff_base.html' %}
 {% block title %} Add order {% endblock title %}
 {% block content %}
 <div class="pagetitle">
@@ -25,7 +25,7 @@
             <div class="form-floating mb-3">
               <select class="form-select" name="item" id="floatingSelect" aria-label="State">
                 {% for item in items %}
-                  <option value="{{item.name}}">
+                  <option value="{{item.id}}">
                     {{item.name}}: {{item.brand.name}}-{{item.model_name.model_name}}
                   </option>
                 {% endfor %}

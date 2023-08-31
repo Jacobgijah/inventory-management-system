@@ -213,7 +213,7 @@
                 <tr>
                   <td>{{order.created_by.username}}</td>
                   <td>
-                    <a href="{% url 'order-request' %}" class="text-primary">
+                    <a href="{% url 'order-detail' order.id %}" class="text-primary">
                       {{ order.item.name }}: {{ order.item.brand.name }}-{{ order.item.model_name.model_name }}
                     </a>
                   </td>

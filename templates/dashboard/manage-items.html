@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'staff_base.html' %}
 {% block title %} Manage item {% endblock title %}
 {% block content %}
 <div class="pagetitle">
@@ -25,7 +25,6 @@
         </div>
     </div> <!--end search bar-->
 
-      {% if brands.count %}
       <!-- Table with stripped rows -->
       <table class="table table-striped">
         <thead>
@@ -42,7 +41,7 @@
           </tr>
         </thead>
         <tbody>
-            {% for item in items %}
+            {% for item in page_obj %}
             {% if item.created_by == user %}
           <tr>
             <td>{{ item.name }}</td>
@@ -78,7 +77,6 @@
         {% endif %}
 
     </ul>
-    {% endif %}
     </div>
   </div>
     
