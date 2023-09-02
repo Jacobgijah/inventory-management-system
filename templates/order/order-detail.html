@@ -14,7 +14,9 @@
 
 <div class="card">
     <div class="card-body">
-      <h5 class="card-title">Item: {{order.item.name}}</h5>
+      <h5 class="card-title">
+        Item: {{ order.item.name }}-{{ order.item.brand.name }}-{{ order.item.model_name.model_name }}
+      </h5>
 
       <!-- Table with stripped rows -->
       <table class="table table-striped">
@@ -30,11 +32,22 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{ order.item.name }}</td>
+            
+            <td>
+              {{ order.item.name }}: {{ order.item.brand.name }}-{{ order.item.model_name.model_name }}
+            </td>
             <td>{{ order.quantity }}</td>
             <td>{{ order.created_by }}</td>
             <td>{{ order.issued_date }}</td>
-            <td>{{ order.status }}</td>
+            <td>
+              {% if order.status == 'Pending' %}
+                <span class="badge bg-warning">{{ order.status }}</span>
+              {% elif order.status == 'Approved' %}
+                <span class="badge bg-success">{{ order.status }}</span>
+              {% else %}
+                <span class="badge bg-danger">{{ order.status }}</span>
+              {% endif %}
+            </td>
             <td>
                 <button class="btn btn-success btn-sm approve-btn" data-order-id="{{ order.id }}"><i class="bi bi-check-circle"></i></button>
                 <button class="btn btn-warning btn-sm decline-btn" data-order-id="{{ order.id }}"><i class="bi bi-x-circle"></i></button>

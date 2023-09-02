@@ -47,11 +47,12 @@ class Item(models.Model):
     description = models.TextField(null=True)
     quantity = models.PositiveIntegerField(null=True)
     receive_quantity = models.PositiveIntegerField(default='0', null=True, blank=True)
+    reorder_level = models.PositiveIntegerField(default='0', null=True, blank=True)
     warranty = models.DateField(null=True)
     registered_date = models.DateTimeField(auto_now_add=True, auto_now=False)
     last_updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     price = models.FloatField(null=True)
-    remarks = models.CharField(max_length=50, null=True)
+    remarks = models.CharField(default='none', max_length=50, null=True)
     class Meta:
         ordering = ['-registered_date']
     

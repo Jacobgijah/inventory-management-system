@@ -37,10 +37,16 @@
         <tbody>
           <tr>
             <td>{{ item.name }}</td>
-            <td>{{ item.quantity }}</td>
+            <td>
+              {% if item.quantity <= item.reorder_level %}
+                <span class="badge bg-warning">{{ item.quantity }}</span>
+              {% else %}
+                <span class="text-primary">{{ item.quantity }}</span>
+              {% endif %}
+            </td>
             <td>{{ item.store }}</td>
             <td>{{ item.last_updated }}</td>
-            <td>none</td>
+            <td><a href="{% url 'reorder-level' item.id %}" class="text-primary">{{ item.reorder_level }}<a></td>
           </tr>
         </tbody>
       </table>

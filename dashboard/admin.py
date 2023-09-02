@@ -16,8 +16,8 @@ class StoreAdmin(admin.ModelAdmin):
     list_filter = ['building']
         
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'model_name', 'serial_no', 'imei', 'category', 'store', 'description',
-                    'quantity', 'warranty', 'registered_date', 'last_updated', 'price')
+    list_display = ('name', 'brand', 'model_name', 'category', 'store', 'quantity', 
+                    'reorder_level', 'warranty', 'registered_date', 'last_updated', 'price')
     list_filter = ['category', 'brand', 'store', 'model_name']
 
 

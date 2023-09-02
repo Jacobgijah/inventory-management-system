@@ -27,14 +27,13 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Name</th>
-                  <th scope="col">Brand</th>
+                  <th scope="col">Model</th>
                   <th scope="col">Category</th>
                   <th scope="col">Store</th>
                   <th scope="col">Quantity</th>
-                  <th scope="col">Price(Tshs)</th>
-                  <th scope="col">Remarks</th>
-                  <th scope="col">Timestamp</th>
+                  <th scope="col">Reorder Level</th>
                   <th scope="col">Last Updated</th>
+                  <th scope="col">Remarks</th>
                 </tr>
               </thead>
               <tbody>
@@ -42,14 +41,19 @@
                 <tr>
                   <td>{{ forloop.counter }}</td>
                   <td>{{ item.name }}</td>
-                  <td>{{ item.brand }}</td>
+                  <td>{{ item.model_name }}</td>
                   <td>{{ item.category }}</td>
                   <td>{{ item.store }}</td>
-                  <td>{{ item.quantity }}</td>
-                  <td>{{ item.price }}</td>
-                  <td>{{ item.remarks }}</td>
-                  <td>{{ item.registered_date }}</td>
+                  <td>
+                    {% if item.quantity <= item.reorder_level %}
+                      <span class="badge bg-warning">{{ item.quantity }}</span>
+                    {% else %}
+                      <span class="text-primary">{{ item.quantity }}</span>
+                    {% endif %}
+                  </td>
+                  <td>{{ item.reorder_level }}</td>
                   <td>{{ item.last_updated }}</td>
+                  <td>{{ item.remarks }}</td>
                   {% comment %} <td>
                     <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-fill"></i></a>
                         <a href="#" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>

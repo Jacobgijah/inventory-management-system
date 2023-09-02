@@ -413,4 +413,25 @@ def receive_items(request, id):
         item.save()
         messages.success(request, f"Successfully added: {instance_quantity} quantity of item {item.name}.")
         return redirect("detail-items", id=item.id)
+    
+@login_required
+def reorder_level(request, id):
+    item = get_object_or_404(Item, pk=id)
+    context = {
+        'item': item,
+    }
+    
+    if request.method == 'GET':    
+        return render(request, 'dashboard/reorder-level.html', context)
+
+    if request.method == 'POST':
+        reorder_level = request.POST['quantity']
+        
+        instance_reorder_level = int(reorder_level)
+        
+        item.reorder_level = instance_reorder_level
+        item.save()
+        messages.success(request, f"Successfully added: {instance_reorder_level} reorder level of item {item.name}.")
+        return redirect("detail-items", id=item.id)
+    
 

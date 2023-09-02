@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.db import transaction
 
 # Create your views here.
 
@@ -107,9 +108,27 @@ def update_order_status(request):
 
         try:
             order = Order.objects.get(id=order_id)
-            order.status = new_status
-            order.save()
-            return JsonResponse({"success": True})
+
+            if new_status == "Approved":
+                # Check if the requested quantity is less than or equal to the available quantity
+                if order.quantity <= order.item.quantity:
+                    with transaction.atomic():
+                        order.status = new_status
+                        order.item.quantity -= order.quantity
+                        order.item.save()
+                        order.save()
+                    return JsonResponse({"success": True})
+                else:
+                    return JsonResponse({"success": False, "error": "Insufficient quantity available"})
+
+            elif new_status == "Declined":
+                order.status = new_status
+                order.save()
+                return JsonResponse({"success": True})
+
+            else:
+                return JsonResponse({"success": False, "error": "Invalid status"})
+
         except Order.DoesNotExist:
             return JsonResponse({"success": False, "error": "Order not found"})
     else:

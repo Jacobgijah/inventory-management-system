@@ -45,7 +45,15 @@
                 </a>
               </td>
               <td>{{ order.quantity }}</td>
-              <td>{{ order.status }}</td>
+              <td>
+                {% if order.status == 'Pending' %}
+                  <span class="badge bg-warning">{{ order.status }}</span>
+                {% elif order.status == 'Approved' %}
+                  <span class="badge bg-success">{{ order.status }}</span>
+                {% else %}
+                  <span class="badge bg-danger">{{ order.status }}</span>
+                {% endif %}
+              </td>
             </tr>
             {% endfor %}
           </tbody>
