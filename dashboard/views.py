@@ -65,6 +65,21 @@ def view_items(request):
     return render(request, 'dashboard/view-items.html', context)
 
 @login_required
+def history_items(request):
+    items = Item.objects.all()
+    orders = Order.objects.all()
+    paginator = Paginator(items, 5)
+    page_no = request.GET.get("page")
+    page_obj = Paginator.get_page(paginator, page_no)
+    context = {
+        'items': items,
+        'orders': orders,
+        "page_obj": page_obj,
+    }
+    return render(request, 'dashboard/history-items.html', context)
+    
+    
+@login_required
 def view_stores(request):
     stores = Store.objects.annotate(item_count=Count('item')) 
     context = {

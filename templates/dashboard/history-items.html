@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %} History items {% endblock title %}
+{% load static %}
+{% block content %}
+<div class="pagetitle">
+    <h1>History of Items</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active">History items</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            {% comment %} <h5 class="card-title">Items</h5>
+           
+            <p>class name to any table you wish to conver to a datatable</p> {% endcomment %}
+
+            <!-- Table with stripped rows -->
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Item</th>
+                  <th scope="col">Model</th>
+                  <th scope="col">Quantity in store</th>
+                  <th scope="col">Issue Quantity</th>
+                  <th scope="col">Receive Quantity</th>
+                  <th scope="col">Received By</th>
+                  <th scope="col">Issued By</th>
+                  <th scope="col">Last Updated</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in page_obj %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.model_name }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ orders.quantity }}</td>
+                  <td>{{ item.receive_quantity }}</td>
+                  <td>{{ item.created_by }}</td>
+                  <td>{{ orders.created_by }}</td>
+                  <td>{{ item.last_updated }}</td>
+                  {% comment %} <td>
+                    <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-fill"></i></a>
+                        <a href="#" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
+                  </td> {% endcomment %}
+                </tr>
+                {% endfor %}                  
+              </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+            <div  class="">
+              Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </div>
+            <ul class="pagination align-right float-end mr-auto">
+              {% if page_obj.has_previous %}
+              <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; 1</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-rewind"></i></a></li>
+              {% endif %}
+              
+              {% if page_obj.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}"><i class="bi bi-fast-forward"></i></a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }} &raquo;</a></li>
+              {% endif %}
+      
+          </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+{% endblock content %}

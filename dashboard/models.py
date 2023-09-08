@@ -6,6 +6,7 @@ class Brand(models.Model):
     description = models.TextField(null=True)
     class Meta:
         verbose_name_plural = 'Brand'
+        ordering = ['name']
 
     def __str__(self):
         return self.name   
@@ -17,6 +18,8 @@ class Attribute(models.Model):
     manufacture_year = models.DateField(null=True)  
     class Meta:
         verbose_name_plural = 'Attribute'
+        ordering = ['-manufacture_year']
+    
 
     def __str__(self):
         return f'{self.model_name}-{self.generation}' 
@@ -25,6 +28,9 @@ class Store(models.Model):
     name = models.CharField(max_length=50, null=True)
     building = models.CharField(max_length=100, null=True)
     room = models.CharField(max_length=20, null=True)
+    
+    class Meta:
+        ordering = ['name']
     
     def __str__(self):
         return self.name
@@ -54,7 +60,7 @@ class Item(models.Model):
     price = models.FloatField(null=True)
     remarks = models.CharField(default='none', max_length=50, null=True)
     class Meta:
-        ordering = ['-registered_date']
+        ordering = ['-last_updated']
     
     def __str__(self):
         return f'{self.name}: {self.brand.name}-{self.model_name.model_name}'
