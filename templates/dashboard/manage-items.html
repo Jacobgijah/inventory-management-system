@@ -54,7 +54,7 @@
                 <a href="{% url 'detail-items' item.id %}" class="text-primary">{{ item.quantity }}</a>
               {% endif %}
             </td>
-            <td>{{ item.quantity }}</a></td>
+            <td>{{ item.reorder_level }}</a></td>
             <td>{{ item.price }}</td>
             <td>
                 <a href="{% url 'edit-items' item.id %}" class="btn btn-primary btn-sm"><i class="bi bi-pencil-fill"></i></a>

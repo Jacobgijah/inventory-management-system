@@ -449,4 +449,10 @@ def reorder_level(request, id):
         messages.success(request, f"Successfully added: {instance_reorder_level} reorder level of item {item.name}.")
         return redirect("detail-items", id=item.id)
     
-
+@login_required
+def report_items(request):
+    items = Item.objects.all() # using ORM
+    context = {
+        'items': items,
+    }
+    return render(request, 'dashboard/report-items.html', context)
